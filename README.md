@@ -19,22 +19,21 @@ npm run dev
 
 Open http://localhost:3000
 
-## Deploying to Cloudflare Pages
+## Deploying to Cloudflare (Workers, static assets)
 
-The site ships as a static export, so it runs on Cloudflare Pages free tier with no server costs.
+The site ships as a static export, so it runs on Cloudflare's free tier with no server costs. The repo includes a `wrangler.jsonc` that publishes the static build as a Workers assets project.
 
 1. Push this repository to GitHub.
-2. In the Cloudflare dashboard, go to Workers & Pages → Create → Pages → Connect to Git and pick this repository.
+2. In the Cloudflare dashboard, create a Workers project connected to this repository (Workers & Pages → Create → Workers → Connect to Git).
 3. Use these build settings:
-   - Framework preset: None
    - Build command: `npm run build:static`
-   - Build output directory: `out`
-4. Under Settings → Environment variables, add `NODE_VERSION` = `22` for both Production and Preview.
-5. Deploy. Every push to the repository now redeploys the site automatically.
+   - Deploy command: `npx wrangler deploy`
+4. Deploy. Every push to the repository now redeploys the site automatically.
 
 No environment variables, database or API keys are needed for the build.
 
 ## Notes
 
 - `npm run build:static` outputs the static site to `out/` and never touches the sandbox's own build artifacts.
+- `npm run build` produces the sandbox production bundle AND the static `out/` folder, so Cloudflare's default `bun run build` command works unchanged.
 - The footer credit, "Designed By Fadelys Studio", links to https://fadelysstudio.space-z.ai/
